@@ -13,14 +13,26 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar";
 import { TaskStats } from "@/components/dashboard/task-stats";
+import { TaskFilters } from "@/components/dashboard/task-filters";
 import { TaskList } from "@/components/dashboard/task-list";
 import { CreateTaskDialog } from "@/components/dashboard/create-task-dialog";
 import { EditTaskDialog } from "@/components/dashboard/edit-task-dialog";
 import { DeleteTaskDialog } from "@/components/dashboard/delete-task-dialog";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 function DashboardContent() {
   const { tasks, isLoading, createTask, updateTask, deleteTask, updateFilters, fetchTasks } = useTasks();
-  const { searchQuery, statusFilter, priorityFilter, createDialogOpen, setCreateDialogOpen } = useFilters();
+  const {
+    searchQuery,
+    setSearchQuery,
+    statusFilter,
+    setStatusFilter,
+    priorityFilter,
+    setPriorityFilter,
+    createDialogOpen,
+    setCreateDialogOpen,
+  } = useFilters();
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -79,6 +91,24 @@ function DashboardContent() {
             <div className="@container/main flex flex-1 flex-col gap-2">
               <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-4 lg:px-6">
                 <TaskStats />
+
+                <div className="flex items-center justify-end lg:hidden">
+                  <Button onClick={() => setCreateDialogOpen(true)}>
+                    <Plus className="mr-2 size-4" />
+                    Add Task
+                  </Button>
+                </div>
+
+                <div className="w-full lg:hidden">
+                  <TaskFilters
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
+                    statusFilter={statusFilter}
+                    onStatusChange={setStatusFilter}
+                    priorityFilter={priorityFilter}
+                    onPriorityChange={setPriorityFilter}
+                  />
+                </div>
 
                 <TaskList
                   tasks={tasks}
