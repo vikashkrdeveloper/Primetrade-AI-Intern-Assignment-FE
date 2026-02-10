@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/contexts/auth-context";
+import { ThemeProvider } from "@/contexts/theme-context";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -20,9 +23,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} antialiased`}>
-        <TooltipProvider>{children}</TooltipProvider>
+    <html lang="en" className="dark" suppressHydrationWarning={true}>
+      <body
+        className={`${inter.variable} antialiased`}
+        suppressHydrationWarning={true}
+      >
+        <ThemeProvider>
+          <AuthProvider>
+            <TooltipProvider>
+              {children}
+              <Toaster />
+            </TooltipProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
